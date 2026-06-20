@@ -1,4 +1,5 @@
 import { AppSidebar } from "@/components/layout/app-sidebar";
+import { QuickCaptureSheet } from "@/components/layout/quick-capture-sheet";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -16,6 +17,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <SidebarTrigger />
         </header>
         <main className="mx-auto w-full max-w-5xl px-page py-page">{children}</main>
+        <QuickCaptureSheet />
       </SidebarInset>
     </SidebarProvider>
   );
