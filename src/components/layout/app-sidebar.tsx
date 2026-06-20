@@ -5,11 +5,13 @@ import { usePathname } from "next/navigation";
 import {
   CalendarDays,
   LayoutList,
+  LogOut,
   Settings,
   Ticket,
   Users,
 } from "lucide-react";
 
+import { logoutAction } from "@/actions/auth";
 import {
   Sidebar,
   SidebarContent,
@@ -88,6 +90,19 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <NavMenu items={footerNavItems} />
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <form action={logoutAction}>
+                  <SidebarMenuButton
+                    type="submit"
+                    className="w-full text-muted-foreground"
+                  >
+                    <LogOut />
+                    <span>Đăng xuất</span>
+                  </SidebarMenuButton>
+                </form>
+              </SidebarMenuItem>
+            </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarFooter>

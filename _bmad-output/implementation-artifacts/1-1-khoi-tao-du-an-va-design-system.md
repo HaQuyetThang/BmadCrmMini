@@ -4,7 +4,7 @@ baseline_commit: NO_VCS
 
 # Story 1.1: Khởi tạo dự án và design system
 
-Status: review
+Status: done
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -359,3 +359,4 @@ Auto (Cursor Agent)
 ## Change Log
 
 - 2026-06-20: Story 1.1 implemented — Next.js scaffold, design system, app shell, Prisma AppSetting foundation
+- 2026-06-20: Story 1.1 marked done (code review skipped)

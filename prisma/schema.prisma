@@ -7,8 +7,34 @@ datasource db {
   provider = "postgresql"
 }
 
+enum PipelineStatus {
+  LEAD_MOI
+  DANG_TU_VAN
+}
+
+model Customer {
+  id              String         @id @default(cuid())
+  name            String
+  source          String         @default("Zalo")
+  firstMessage    String?
+  pipelineStatus  PipelineStatus @default(LEAD_MOI)
+  statusChangedAt DateTime       @default(now())
+  deletedAt       DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
 model AppSetting {
   key       String   @id
   value     String
   updatedAt DateTime @updatedAt
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
