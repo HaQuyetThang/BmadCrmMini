@@ -6,6 +6,8 @@ import { toast } from "sonner";
 
 import { softDeleteCustomer, updateCustomer } from "@/actions/customers";
 import { CustomerProfileHeader } from "@/components/customers/customer-profile-header";
+import { RenewalStatusBadge } from "@/components/customers/renewal-status-badge";
+import { clearStaleBannerDismiss, StaleBanner } from "@/components/pipeline/stale-banner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -21,8 +23,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { BUSINESS_GROUP_OPTIONS } from "@/lib/constants/business-group";
-import { toDateInputValue } from "@/lib/format";
+import { formatCurrency, toDateInputValue } from "@/lib/format";
 import type { BusinessGroup, PipelineStatus } from "@/generated/prisma/client";
+import type { RenewalInfo } from "@/lib/customers/renewal-status";
+import type { StaleInfo } from "@/lib/customers/stale-status";
 
 type FieldErrors = Record<string, string[] | undefined>;
 
@@ -38,6 +42,8 @@ export type CustomerProfileData = {
   packagePrice: string | null;
   billingCycle: string | null;
   licenseKey: string | null;
+  staleInfo: StaleInfo | null;
+  renewalInfo: RenewalInfo | null;
 };
 
 type CustomerProfileFormProps = {
@@ -55,6 +61,8 @@ export function CustomerProfileForm({ customer }: CustomerProfileFormProps) {
   const router = useRouter();
   const [errors, setErrors] = useState<FieldErrors>({});
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [pipelineStatus, setPipelineStatus] = useState(customer.pipelineStatus);
+  const [showStaleBanner, setShowStaleBanner] = useState(Boolean(customer.staleInfo?.isStale));
   const [isPending, startTransition] = useTransition();
   const [isDeleting, startDeleteTransition] = useTransition();
 
@@ -94,7 +102,18 @@ export function CustomerProfileForm({ customer }: CustomerProfileFormProps) {
 
   return (
     <div className="flex flex-col gap-section">
-      <CustomerProfileHeader customer={customer} />
+      {showStaleBanner && customer.staleInfo ? (
+        <StaleBanner customerId={customer.id} daysCount={customer.staleInfo.daysCount} />
+      ) : null}
+
+      <CustomerProfileHeader
+        customer={{ ...customer, pipelineStatus }}
+        onPipelineStatusChange={(status) => {
+          setPipelineStatus(status);
+          setShowStaleBanner(false);
+          clearStaleBannerDismiss(customer.id);
+        }}
+      />
 
       <Card>
         <CardHeader>
@@ -155,7 +174,15 @@ export function CustomerProfileForm({ customer }: CustomerProfileFormProps) {
               </div>
 
               <div className="flex flex-col gap-row-gap">
-                <Label htmlFor="renewalDate">Ngày gia hạn tiếp theo</Label>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Label htmlFor="renewalDate">Ngày gia hạn tiếp theo</Label>
+                  {customer.renewalInfo ? (
+                    <RenewalStatusBadge
+                      label={customer.renewalInfo.label}
+                      status={customer.renewalInfo.status}
+                    />
+                  ) : null}
+                </div>
                 <Input
                   id="renewalDate"
                   name="renewalDate"
@@ -164,6 +191,9 @@ export function CustomerProfileForm({ customer }: CustomerProfileFormProps) {
                   disabled={isPending}
                   aria-invalid={Boolean(errors.renewalDate)}
                 />
+                {errors.renewalDate?.[0] ? (
+                  <p className="text-body-sm text-destructive">{errors.renewalDate[0]}</p>
+                ) : null}
               </div>
 
               <div className="flex flex-col gap-row-gap">
@@ -178,6 +208,11 @@ export function CustomerProfileForm({ customer }: CustomerProfileFormProps) {
                   disabled={isPending}
                   aria-invalid={Boolean(errors.packagePrice)}
                 />
+                {packagePriceValue ? (
+                  <p className="text-body-sm text-muted-foreground">
+                    Hiển thị: {formatCurrency(packagePriceValue)}
+                  </p>
+                ) : null}
                 {errors.packagePrice?.[0] ? (
                   <p className="text-body-sm text-destructive">{errors.packagePrice[0]}</p>
                 ) : null}

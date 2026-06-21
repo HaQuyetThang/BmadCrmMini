@@ -1,0 +1,8 @@
+-- AlterEnum
+ALTER TYPE "PipelineStatus" ADD VALUE 'HEN_DEMO';
+ALTER TYPE "PipelineStatus" ADD VALUE 'BAO_GIA_DA_GUI';
+ALTER TYPE "PipelineStatus" ADD VALUE 'CHO_THANH_TOAN';
+ALTER TYPE "PipelineStatus" ADD VALUE 'DA_CHOT';
+ALTER TYPE "PipelineStatus" ADD VALUE 'DANG_ONBOARD';
+ALTER TYPE "PipelineStatus" ADD VALUE 'ACTIVE';
+ALTER TYPE "PipelineStatus" ADD VALUE 'CAN_CHAM_SOC';

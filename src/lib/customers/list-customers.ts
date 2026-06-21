@@ -1,6 +1,7 @@
 import type { BusinessGroup, Prisma } from "@/generated/prisma/client";
 
 import { PAGE_SIZE } from "@/lib/constants/pagination";
+import type { RenewalInfo } from "@/lib/customers/renewal-status";
 import { activeCustomersWhere } from "@/lib/db-helpers";
 import { db } from "@/lib/db";
 
@@ -10,7 +11,11 @@ export type CustomerListItem = {
   source: string;
   pipelineStatus: Prisma.CustomerGetPayload<object>["pipelineStatus"];
   businessGroup: BusinessGroup;
+  statusChangedAt: Date;
+  renewalDate: Date | null;
   createdAt: Date;
+  staleDaysCount?: number;
+  renewalInfo?: RenewalInfo;
 };
 
 export type CustomerListResult = {
@@ -58,6 +63,8 @@ export async function listCustomers({
       source: true,
       pipelineStatus: true,
       businessGroup: true,
+      statusChangedAt: true,
+      renewalDate: true,
       createdAt: true,
     },
   });

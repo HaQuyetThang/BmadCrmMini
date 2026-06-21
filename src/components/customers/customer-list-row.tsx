@@ -1,11 +1,9 @@
 import Link from "next/link";
 
-import { Badge } from "@/components/ui/badge";
+import { PipelineStatusChip } from "@/components/pipeline/pipeline-status-chip";
+import { RenewalStatusBadge } from "@/components/customers/renewal-status-badge";
+import { StaleStatusBadge } from "@/components/pipeline/stale-status-badge";
 import type { CustomerListItem } from "@/lib/customers/list-customers";
-import {
-  PIPELINE_GROUP_CLASS,
-  PIPELINE_STATUS_LABELS,
-} from "@/lib/constants/pipeline";
 import { formatDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -14,8 +12,6 @@ type CustomerListRowProps = {
 };
 
 export function CustomerListRow({ customer }: CustomerListRowProps) {
-  const statusMeta = PIPELINE_STATUS_LABELS[customer.pipelineStatus];
-
   return (
     <Link
       href={`/customers/${customer.id}`}
@@ -30,14 +26,18 @@ export function CustomerListRow({ customer }: CustomerListRowProps) {
           {customer.source} · {formatDate(customer.createdAt)}
         </p>
       </div>
-      <Badge
-        className={cn(
-          "shrink-0 border-transparent",
-          PIPELINE_GROUP_CLASS[statusMeta.group],
-        )}
-      >
-        {statusMeta.label}
-      </Badge>
+      <div className="flex shrink-0 flex-col items-end gap-1 sm:flex-row sm:items-center">
+        {customer.renewalInfo ? (
+          <RenewalStatusBadge
+            label={customer.renewalInfo.label}
+            status={customer.renewalInfo.status}
+          />
+        ) : null}
+        {customer.staleDaysCount !== undefined ? (
+          <StaleStatusBadge daysCount={customer.staleDaysCount} />
+        ) : null}
+        <PipelineStatusChip status={customer.pipelineStatus} />
+      </div>
     </Link>
   );
 }

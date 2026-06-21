@@ -5,6 +5,9 @@ import {
   type CustomerProfileData,
 } from "@/components/customers/customer-profile-form";
 import { getCustomerById } from "@/lib/customers/list-customers";
+import { getRenewalInfo } from "@/lib/customers/renewal-status";
+import { getStaleInfo } from "@/lib/customers/stale-status";
+import { getSettings } from "@/lib/settings/get-settings";
 
 type CustomerDetailPageProps = {
   params: Promise<{ id: string }>;
@@ -12,11 +15,14 @@ type CustomerDetailPageProps = {
 
 export default async function CustomerDetailPage({ params }: CustomerDetailPageProps) {
   const { id } = await params;
-  const customer = await getCustomerById(id);
+  const [settings, customer] = await Promise.all([getSettings(), getCustomerById(id)]);
 
   if (!customer) {
     notFound();
   }
+
+  const staleInfo = getStaleInfo(customer.statusChangedAt, settings.staleStatusDays);
+  const renewalInfo = getRenewalInfo(customer.renewalDate, settings.renewalWindowDays);
 
   const profile: CustomerProfileData = {
     id: customer.id,
@@ -30,6 +36,8 @@ export default async function CustomerDetailPage({ params }: CustomerDetailPageP
     packagePrice: customer.packagePrice?.toString() ?? null,
     billingCycle: customer.billingCycle,
     licenseKey: customer.licenseKey,
+    staleInfo: staleInfo.isStale ? staleInfo : null,
+    renewalInfo,
   };
 
   return <CustomerProfileForm customer={profile} />;

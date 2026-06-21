@@ -35,7 +35,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 
 generated: 2026-06-20
-last_updated: 2026-06-20T23:45:00
+last_updated: 2026-06-21
 project: BmadCRMMini
 project_key: NOKEY
 tracking_system: file-system
@@ -47,9 +47,9 @@ development_status:
   1-2-dang-nhap-operator: done
   1-3-quick-capture-lead-30-giay: done
   1-4-danh-sach-va-ho-so-khach: done
-  1-5-pipeline-status-va-lead-pipeline-list: backlog
-  1-6-stale-status-detection-va-nudge: backlog
-  1-7-ngay-gia-han-va-sap-gia-han: backlog
+  1-5-pipeline-status-va-lead-pipeline-list: done
+  1-6-stale-status-detection-va-nudge: done
+  1-7-ngay-gia-han-va-sap-gia-han: done
   1-8-timeline-tuong-tac-tren-chi-tiet-khach: backlog
   epic-1-retrospective: optional
 

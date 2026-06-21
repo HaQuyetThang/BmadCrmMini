@@ -10,6 +10,13 @@ datasource db {
 enum PipelineStatus {
   LEAD_MOI
   DANG_TU_VAN
+  HEN_DEMO
+  BAO_GIA_DA_GUI
+  CHO_THANH_TOAN
+  DA_CHOT
+  DANG_ONBOARD
+  ACTIVE
+  CAN_CHAM_SOC
 }
 
 enum BusinessGroup {

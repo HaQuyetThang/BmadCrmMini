@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { BusinessGroup } from "@/generated/prisma/client";
+import { BusinessGroup, PipelineStatus } from "@/generated/prisma/client";
 
 export const createCustomerSchema = z.object({
   name: z
@@ -120,3 +120,19 @@ export const customerListQuerySchema = z.object({
 });
 
 export type CustomerListQuery = z.infer<typeof customerListQuerySchema>;
+
+export const updatePipelineStatusSchema = z.object({
+  pipelineStatus: z.nativeEnum(PipelineStatus),
+});
+
+export type UpdatePipelineStatusInput = z.infer<typeof updatePipelineStatusSchema>;
+
+export const pipelineListQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).catch(1),
+  status: z.preprocess(
+    (value) => (value === "" || value === undefined ? undefined : value),
+    z.nativeEnum(PipelineStatus).optional().catch(undefined),
+  ),
+});
+
+export type PipelineListQuery = z.infer<typeof pipelineListQuerySchema>;

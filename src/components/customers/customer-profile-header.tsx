@@ -1,26 +1,26 @@
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PipelineStatusChip } from "@/components/pipeline/pipeline-status-chip";
+import { StatusSelect } from "@/components/pipeline/status-select";
 import { BUSINESS_GROUP_LABELS } from "@/lib/constants/business-group";
-import {
-  PIPELINE_GROUP_CLASS,
-  PIPELINE_STATUS_LABELS,
-} from "@/lib/constants/pipeline";
 import type { BusinessGroup, PipelineStatus } from "@/generated/prisma/client";
-import { cn } from "@/lib/utils";
 
 type CustomerProfileHeaderProps = {
   customer: {
+    id: string;
     name: string;
     businessGroup: BusinessGroup;
     pipelineStatus: PipelineStatus;
     licenseKey: string | null;
   };
+  onPipelineStatusChange?: (status: PipelineStatus) => void;
 };
 
-export function CustomerProfileHeader({ customer }: CustomerProfileHeaderProps) {
-  const statusMeta = PIPELINE_STATUS_LABELS[customer.pipelineStatus];
-
+export function CustomerProfileHeader({
+  customer,
+  onPipelineStatusChange,
+}: CustomerProfileHeaderProps) {
   return (
     <header className="flex flex-col gap-section rounded-lg border border-border bg-card p-card-padding">
       <div className="flex flex-col gap-2">
@@ -29,14 +29,14 @@ export function CustomerProfileHeader({ customer }: CustomerProfileHeaderProps) 
           <Badge variant="secondary" className="border-transparent bg-muted text-foreground">
             {BUSINESS_GROUP_LABELS[customer.businessGroup]}
           </Badge>
-          <Badge
-            className={cn(
-              "border-transparent",
-              PIPELINE_GROUP_CLASS[statusMeta.group],
-            )}
-          >
-            {statusMeta.label}
-          </Badge>
+          <PipelineStatusChip status={customer.pipelineStatus} />
+          <StatusSelect
+            customerId={customer.id}
+            value={customer.pipelineStatus}
+            className="sm:max-w-52"
+            refreshOnSuccess={false}
+            onSuccess={onPipelineStatusChange}
+          />
         </div>
       </div>
 

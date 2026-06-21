@@ -13,3 +13,11 @@ Backlog các finding từ code review — không chặn story hiện tại.
 - **Promote toast có thể click nhiều lần** [`src/components/layout/quick-capture-sheet.tsx:81-93`] — Idempotent về data nhưng gây duplicate toast và request thừa; cải thiện UX sau.
 
 - **Duplicate default logic `source = "Zalo"`** [`src/actions/customers.ts:24`, `src/lib/validations/customer.ts:14`] — Lành tính; refactor khi cần.
+
+## Deferred from: code review of 1-7-ngay-gia-han-va-sap-gia-han (2026-06-21)
+
+- **Preview `formatCurrency` static khi edit** [`src/components/customers/customer-profile-form.tsx:211-214`] — AC đáp ứng hiển thị sau load/save; live preview khi gõ có thể thêm sau.
+
+- **Không có unit test cho `renewal-status.ts`** — AC không yêu cầu; pure functions dễ test khi cần regression suite.
+
+- **`getRenewalCustomers` chưa gọi `requireSession` trực tiếp** [`src/lib/dashboard/get-renewals.ts:30`] — Helper chưa wired UI; Story 2.4 sẽ gọi từ route protected qua middleware.

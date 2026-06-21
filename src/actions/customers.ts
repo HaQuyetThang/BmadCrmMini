@@ -8,6 +8,7 @@ import { db } from "@/lib/db";
 import {
   createCustomerSchema,
   updateCustomerSchema,
+  updatePipelineStatusSchema,
 } from "@/lib/validations/customer";
 import { PipelineStatus, Prisma } from "@/generated/prisma/client";
 
@@ -15,6 +16,39 @@ type CreatedCustomer = {
   id: string;
   name: string;
 };
+
+function revalidateCustomerSurfaces(customerId?: string) {
+  revalidatePath("/");
+  revalidatePath("/customers");
+  revalidatePath("/pipeline");
+
+  if (customerId) {
+    revalidatePath(`/customers/${customerId}`);
+  }
+}
+
+async function applyPipelineStatusUpdate(
+  customerId: string,
+  pipelineStatus: PipelineStatus,
+): Promise<ActionResult<{ id: string }>> {
+  try {
+    const updated = await db.customer.updateMany({
+      where: { id: customerId, deletedAt: null },
+      data: { pipelineStatus, statusChangedAt: new Date() },
+    });
+
+    if (updated.count === 0) {
+      return { ok: false, error: "Không tìm thấy khách." };
+    }
+
+    revalidateCustomerSurfaces(customerId);
+
+    return { ok: true, data: { id: customerId } };
+  } catch (error) {
+    console.error("applyPipelineStatusUpdate failed", error);
+    return { ok: false, error: "Không cập nhật được trạng thái." };
+  }
+}
 
 export async function createCustomer(formData: FormData): Promise<ActionResult<CreatedCustomer>> {
   const authResult = await requireSession();
@@ -46,9 +80,7 @@ export async function createCustomer(formData: FormData): Promise<ActionResult<C
       },
     });
 
-    revalidatePath("/");
-    revalidatePath("/customers");
-    revalidatePath("/pipeline");
+    revalidateCustomerSurfaces();
 
     return { ok: true, data: customer };
   } catch (error) {
@@ -66,26 +98,26 @@ export async function promoteCustomerToConsulting(
     return authResult;
   }
 
-  try {
-    const updated = await db.customer.updateMany({
-      where: { id: customerId, deletedAt: null },
-      data: { pipelineStatus: PipelineStatus.DANG_TU_VAN, statusChangedAt: new Date() },
-    });
+  return applyPipelineStatusUpdate(customerId, PipelineStatus.DANG_TU_VAN);
+}
 
-    if (updated.count === 0) {
-      return { ok: false, error: "Không tìm thấy lead để cập nhật." };
-    }
+export async function updatePipelineStatus(
+  customerId: string,
+  pipelineStatus: PipelineStatus,
+): Promise<ActionResult<{ id: string }>> {
+  const authResult = await requireSession();
 
-    revalidatePath("/");
-    revalidatePath("/customers");
-    revalidatePath("/pipeline");
-    revalidatePath(`/customers/${customerId}`);
-
-    return { ok: true, data: { id: customerId } };
-  } catch (error) {
-    console.error("promoteCustomerToConsulting failed", error);
-    return { ok: false, error: "Không cập nhật được trạng thái." };
+  if (!authResult.ok) {
+    return authResult;
   }
+
+  const parsed = updatePipelineStatusSchema.safeParse({ pipelineStatus });
+
+  if (!parsed.success) {
+    return { ok: false, error: "Trạng thái không hợp lệ." };
+  }
+
+  return applyPipelineStatusUpdate(customerId, parsed.data.pipelineStatus);
 }
 
 export async function updateCustomer(
@@ -139,10 +171,7 @@ export async function updateCustomer(
       return { ok: false, error: "Không tìm thấy khách." };
     }
 
-    revalidatePath("/");
-    revalidatePath("/customers");
-    revalidatePath("/pipeline");
-    revalidatePath(`/customers/${customerId}`);
+    revalidateCustomerSurfaces(customerId);
 
     return { ok: true, data: { id: customerId } };
   } catch (error) {
@@ -170,9 +199,7 @@ export async function softDeleteCustomer(
       return { ok: false, error: "Không tìm thấy khách." };
     }
 
-    revalidatePath("/");
-    revalidatePath("/customers");
-    revalidatePath("/pipeline");
+    revalidateCustomerSurfaces();
 
     return { ok: true, data: { id: customerId } };
   } catch (error) {
