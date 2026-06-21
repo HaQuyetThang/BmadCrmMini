@@ -12,12 +12,26 @@ enum PipelineStatus {
   DANG_TU_VAN
 }
 
+enum BusinessGroup {
+  KE_TOAN
+  MARKETING
+  KHAC
+}
+
 model Customer {
   id              String         @id @default(cuid())
   name            String
   source          String         @default("Zalo")
   firstMessage    String?
   pipelineStatus  PipelineStatus @default(LEAD_MOI)
+  businessGroup   BusinessGroup  @default(KHAC)
+  serviceType     String?
+  contactChannel  String?
+  specialNotes    String?
+  renewalDate     DateTime?
+  packagePrice    Decimal?       @db.Decimal(12, 2)
+  billingCycle    String?
+  licenseKey      String?
   statusChangedAt DateTime       @default(now())
   deletedAt       DateTime?
   createdAt       DateTime       @default(now())
