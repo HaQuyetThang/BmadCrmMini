@@ -58,6 +58,20 @@ Mở [http://localhost:3000](http://localhost:3000) — redirect `/login` nếu 
 | `npm run build` | Production build |
 | `npm run lint` | ESLint |
 | `npm run typecheck` | TypeScript check |
+| `npm run test:e2e` | Playwright E2E (Epic 1 flows; cần Docker + migrate + seed) |
+| `npm run test:e2e:ui` | Playwright UI mode |
+| `npm run test:e2e:install` | Cài/tải lại browser Chromium cho Playwright |
+
+**Lỗi Playwright UI** (`file data stream has unexpected number of bytes`, `zip file is truncated`):
+
+1. Đóng Playwright UI và cửa sổ Chrome test (nếu có)
+2. Trong terminal project:
+
+```powershell
+Remove-Item -Recurse -Force test-results, playwright-report -ErrorAction SilentlyContinue
+npm run test:e2e:install
+npm run test:e2e:ui
+```
 
 ## Cấu trúc
 

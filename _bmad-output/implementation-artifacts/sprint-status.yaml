@@ -53,8 +53,8 @@ development_status:
   1-8-timeline-tuong-tac-tren-chi-tiet-khach: backlog
   epic-1-retrospective: optional
 
-  epic-2: backlog
-  2-1-layout-hom-nay-skeleton-va-empty-states: backlog
+  epic-2: in-progress
+  2-1-layout-hom-nay-skeleton-va-empty-states: done
   2-2-kpi-row-tren-hom-nay: backlog
   2-3-alert-strips-uu-tien: backlog
   2-4-ba-danh-sach-uu-tien-va-drill-down: backlog

@@ -21,3 +21,17 @@ Backlog các finding từ code review — không chặn story hiện tại.
 - **Không có unit test cho `renewal-status.ts`** — AC không yêu cầu; pure functions dễ test khi cần regression suite.
 
 - **`getRenewalCustomers` chưa gọi `requireSession` trực tiếp** [`src/lib/dashboard/get-renewals.ts:30`] — Helper chưa wired UI; Story 2.4 sẽ gọi từ route protected qua middleware.
+
+## Deferred from: code review of 2-1-layout-hom-nay-skeleton-va-empty-states (2026-06-22)
+
+- **Tablet KPI chưa "thu nhỏ" typography 768–1023px** [`src/components/dashboard/kpi-card.tsx`] — Layout grid đúng; responsive text/padding có thể thêm khi visual QA tablet.
+
+- **KPI horizontal scroll không keyboard-accessible** [`src/components/dashboard/kpi-row.tsx:26`] — Thiếu scroll affordance cho clipped cards trên mobile; a11y enhancement.
+
+- **Skeleton `animate-pulse` không respect `prefers-reduced-motion`** [`src/components/ui/skeleton.tsx:7`] — Shared component; fix toàn app khi có motion policy.
+
+- **Responsive layout classes trùng lặp 3 files** — Extract shared layout primitive khi refactor dashboard.
+
+- **Above-fold NFR-2 chưa test viewport ngắn** — Manual 1280×800 đủ cho story 2.1; Playwright viewport test khi cần regression.
+
+- **E2E không assert skeleton visibility** — Phụ thuộc quyết định static-page loading behavior; thêm sau khi resolve loading boundary architecture.
