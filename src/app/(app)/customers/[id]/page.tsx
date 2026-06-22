@@ -8,6 +8,7 @@ import { getCustomerById } from "@/lib/customers/list-customers";
 import { getRenewalInfo } from "@/lib/customers/renewal-status";
 import { getStaleInfo } from "@/lib/customers/stale-status";
 import { getSettings } from "@/lib/settings/get-settings";
+import { getTimelineEntries } from "@/lib/timeline/get-timeline-entries";
 
 type CustomerDetailPageProps = {
   params: Promise<{ id: string }>;
@@ -15,7 +16,11 @@ type CustomerDetailPageProps = {
 
 export default async function CustomerDetailPage({ params }: CustomerDetailPageProps) {
   const { id } = await params;
-  const [settings, customer] = await Promise.all([getSettings(), getCustomerById(id)]);
+  const [settings, customer, timelineEntries] = await Promise.all([
+    getSettings(),
+    getCustomerById(id),
+    getTimelineEntries(id),
+  ]);
 
   if (!customer) {
     notFound();
@@ -38,6 +43,12 @@ export default async function CustomerDetailPage({ params }: CustomerDetailPageP
     licenseKey: customer.licenseKey,
     staleInfo: staleInfo.isStale ? staleInfo : null,
     renewalInfo,
+    timelineEntries: timelineEntries.map((entry) => ({
+      id: entry.id,
+      type: entry.type,
+      content: entry.content,
+      createdAt: entry.createdAt.toISOString(),
+    })),
   };
 
   return <CustomerProfileForm customer={profile} />;

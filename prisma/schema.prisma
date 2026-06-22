@@ -25,24 +25,44 @@ enum BusinessGroup {
   KHAC
 }
 
+enum TimelineType {
+  ZALO
+  CALL
+  TICKET
+  NOTE
+}
+
 model Customer {
-  id              String         @id @default(cuid())
-  name            String
-  source          String         @default("Zalo")
-  firstMessage    String?
-  pipelineStatus  PipelineStatus @default(LEAD_MOI)
-  businessGroup   BusinessGroup  @default(KHAC)
-  serviceType     String?
-  contactChannel  String?
-  specialNotes    String?
-  renewalDate     DateTime?
-  packagePrice    Decimal?       @db.Decimal(12, 2)
-  billingCycle    String?
-  licenseKey      String?
-  statusChangedAt DateTime       @default(now())
-  deletedAt       DateTime?
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  id                String           @id @default(cuid())
+  name              String
+  source            String           @default("Zalo")
+  firstMessage      String?
+  pipelineStatus    PipelineStatus   @default(LEAD_MOI)
+  businessGroup     BusinessGroup    @default(KHAC)
+  serviceType       String?
+  contactChannel    String?
+  specialNotes      String?
+  renewalDate       DateTime?
+  packagePrice      Decimal?         @db.Decimal(12, 2)
+  billingCycle      String?
+  licenseKey        String?
+  statusChangedAt   DateTime         @default(now())
+  lastInteractionAt DateTime?
+  deletedAt         DateTime?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  timeline          TimelineEntry[]
+}
+
+model TimelineEntry {
+  id         String       @id @default(cuid())
+  customerId String
+  customer   Customer     @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  type       TimelineType
+  content    String
+  createdAt  DateTime     @default(now())
+
+  @@index([customerId, createdAt(sort: Desc)])
 }
 
 model AppSetting {

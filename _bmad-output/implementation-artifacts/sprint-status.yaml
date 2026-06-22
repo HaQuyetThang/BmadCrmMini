@@ -50,7 +50,7 @@ development_status:
   1-5-pipeline-status-va-lead-pipeline-list: done
   1-6-stale-status-detection-va-nudge: done
   1-7-ngay-gia-han-va-sap-gia-han: done
-  1-8-timeline-tuong-tac-tren-chi-tiet-khach: backlog
+  1-8-timeline-tuong-tac-tren-chi-tiet-khach: done
   epic-1-retrospective: optional
 
   epic-2: in-progress

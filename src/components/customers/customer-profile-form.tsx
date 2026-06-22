@@ -8,6 +8,7 @@ import { softDeleteCustomer, updateCustomer } from "@/actions/customers";
 import { CustomerProfileHeader } from "@/components/customers/customer-profile-header";
 import { RenewalStatusBadge } from "@/components/customers/renewal-status-badge";
 import { clearStaleBannerDismiss, StaleBanner } from "@/components/pipeline/stale-banner";
+import { TimelineSection, type TimelineEntryData } from "@/components/timeline/timeline-section";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -44,6 +45,7 @@ export type CustomerProfileData = {
   licenseKey: string | null;
   staleInfo: StaleInfo | null;
   renewalInfo: RenewalInfo | null;
+  timelineEntries: TimelineEntryData[];
 };
 
 type CustomerProfileFormProps = {
@@ -291,6 +293,8 @@ export function CustomerProfileForm({ customer }: CustomerProfileFormProps) {
           </form>
         </CardContent>
       </Card>
+
+      <TimelineSection customerId={customer.id} entries={customer.timelineEntries} />
     </div>
   );
 }

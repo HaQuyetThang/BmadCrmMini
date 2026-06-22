@@ -22,6 +22,12 @@ Backlog các finding từ code review — không chặn story hiện tại.
 
 - **`getRenewalCustomers` chưa gọi `requireSession` trực tiếp** [`src/lib/dashboard/get-renewals.ts:30`] — Helper chưa wired UI; Story 2.4 sẽ gọi từ route protected qua middleware.
 
+## Deferred from: code review of 1-8-timeline-tuong-tac-tren-chi-tiet-khach (2026-06-21)
+
+- **`getTimelineEntries` là query DB riêng** — Đã parallelize qua `Promise.all`; gộp vào `getCustomerById` khi cần tối ưu query count.
+
+- **Không có unit test cho `logTimelineEntry` / validation** — AC chỉ yêu cầu manual + build/lint/typecheck; thêm khi có regression suite.
+
 ## Deferred from: code review of 2-1-layout-hom-nay-skeleton-va-empty-states (2026-06-22)
 
 - **Tablet KPI chưa "thu nhỏ" typography 768–1023px** [`src/components/dashboard/kpi-card.tsx`] — Layout grid đúng; responsive text/padding có thể thêm khi visual QA tablet.

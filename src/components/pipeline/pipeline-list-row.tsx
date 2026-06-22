@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 import { PipelineStatusChip } from "@/components/pipeline/pipeline-status-chip";

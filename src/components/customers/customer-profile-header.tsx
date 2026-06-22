@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { LoginSupportButton } from "@/components/timeline/login-support-button";
 import { PipelineStatusChip } from "@/components/pipeline/pipeline-status-chip";
 import { StatusSelect } from "@/components/pipeline/status-select";
 import { BUSINESS_GROUP_LABELS } from "@/lib/constants/business-group";
@@ -41,7 +42,12 @@ export function CustomerProfileHeader({
       </div>
 
       <div className="flex flex-col gap-row-gap">
-        <Label htmlFor="profile-license-display">License/key</Label>
+        <div className="flex flex-wrap items-end justify-between gap-2">
+          <Label htmlFor="profile-license-display" className="flex-1">
+            License/key
+          </Label>
+          <LoginSupportButton customerId={customer.id} />
+        </div>
         <Input
           id="profile-license-display"
           readOnly

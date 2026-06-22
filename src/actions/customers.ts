@@ -1,10 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-
 import type { ActionResult } from "@/lib/action-result";
 import { requireSession } from "@/lib/auth-guard";
 import { db } from "@/lib/db";
+import { revalidateCustomerSurfaces } from "@/lib/revalidate-customer-surfaces";
 import {
   createCustomerSchema,
   updateCustomerSchema,
@@ -16,16 +15,6 @@ type CreatedCustomer = {
   id: string;
   name: string;
 };
-
-function revalidateCustomerSurfaces(customerId?: string) {
-  revalidatePath("/");
-  revalidatePath("/customers");
-  revalidatePath("/pipeline");
-
-  if (customerId) {
-    revalidatePath(`/customers/${customerId}`);
-  }
-}
 
 async function applyPipelineStatusUpdate(
   customerId: string,
