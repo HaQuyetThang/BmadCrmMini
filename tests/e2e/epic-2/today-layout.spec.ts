@@ -8,13 +8,15 @@ test.describe("Story 2.1 — Hôm nay layout", () => {
   });
 
   test("renders dashboard layout with empty states", async ({ page }) => {
+    await page.goto("/");
     await expect(page.getByRole("heading", { name: "Hôm nay", level: 1 })).toBeVisible();
     await expect(page.getByRole("region", { name: "Chỉ số vận hành" })).toBeVisible();
     await expect(page.getByRole("region", { name: "Cảnh báo ưu tiên" })).toBeVisible();
     await expect(page.getByText("Chưa có việc hôm nay.")).toHaveCount(3);
-    await expect(page.getByRole("group", { name: "Khách active: 0" })).toBeVisible();
-    await expect(page.getByRole("group", { name: "Doanh thu tuần tháng: 0" })).toBeVisible();
-    await expect(page.getByRole("group", { name: "Ticket mở: 0" })).toBeVisible();
+    await expect(page.getByRole("group", { name: /Khách active: \d+/ })).toBeVisible();
+    await expect(page.getByRole("group", { name: /Doanh thu tuần tháng:/ })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Ticket mở: \d+/ })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Ticket Khẩn mở/ })).toHaveCount(0);
   });
 
   test("navigates to customers without regression", async ({ page }) => {

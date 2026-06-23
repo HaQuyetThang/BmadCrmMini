@@ -40,6 +40,8 @@ export type CustomerProfileData = {
   contactChannel: string | null;
   specialNotes: string | null;
   renewalDate: string | null;
+  demoScheduledAt: string | null;
+  paymentDueAt: string | null;
   packagePrice: string | null;
   billingCycle: string | null;
   licenseKey: string | null;
@@ -195,6 +197,36 @@ export function CustomerProfileForm({ customer }: CustomerProfileFormProps) {
                 />
                 {errors.renewalDate?.[0] ? (
                   <p className="text-body-sm text-destructive">{errors.renewalDate[0]}</p>
+                ) : null}
+              </div>
+
+              <div className="flex flex-col gap-row-gap">
+                <Label htmlFor="demoScheduledAt">Lịch hẹn demo</Label>
+                <Input
+                  id="demoScheduledAt"
+                  name="demoScheduledAt"
+                  type="date"
+                  defaultValue={toDateInputValue(customer.demoScheduledAt)}
+                  disabled={isPending}
+                  aria-invalid={Boolean(errors.demoScheduledAt)}
+                />
+                {errors.demoScheduledAt?.[0] ? (
+                  <p className="text-body-sm text-destructive">{errors.demoScheduledAt[0]}</p>
+                ) : null}
+              </div>
+
+              <div className="flex flex-col gap-row-gap">
+                <Label htmlFor="paymentDueAt">Hạn thanh toán</Label>
+                <Input
+                  id="paymentDueAt"
+                  name="paymentDueAt"
+                  type="date"
+                  defaultValue={toDateInputValue(customer.paymentDueAt)}
+                  disabled={isPending}
+                  aria-invalid={Boolean(errors.paymentDueAt)}
+                />
+                {errors.paymentDueAt?.[0] ? (
+                  <p className="text-body-sm text-destructive">{errors.paymentDueAt[0]}</p>
                 ) : null}
               </div>
 

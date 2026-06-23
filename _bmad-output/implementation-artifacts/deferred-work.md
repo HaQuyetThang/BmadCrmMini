@@ -41,3 +41,23 @@ Backlog các finding từ code review — không chặn story hiện tại.
 - **Above-fold NFR-2 chưa test viewport ngắn** — Manual 1280×800 đủ cho story 2.1; Playwright viewport test khi cần regression.
 
 - **E2E không assert skeleton visibility** — Phụ thuộc quyết định static-page loading behavior; thêm sau khi resolve loading boundary architecture.
+
+## Deferred from: code review of 2-2-kpi-row-tren-hom-nay (2026-06-22)
+
+- **E2E regex `[1-9]` fragile khi active count ≥ 10** [`tests/e2e/epic-2/kpi-row.spec.ts:29`] — Đổi `\d+` khi refactor test suite.
+
+- **`get-kpis.ts` và `kpi-row.spec.ts` chưa git-track** — Cần `git add` trước commit story 2.2.
+
+## Deferred from: code review of 2-3-alert-strips-uu-tien (2026-06-23)
+
+- **`getDashboardAlerts` không gọi `requireSession` trực tiếp** [`src/lib/dashboard/get-alerts.ts:41`] — Page `/` protected qua middleware; pattern giống `getRenewalCustomers` story 1.7.
+
+- **Không có index DB cho `demoScheduledAt` / `paymentDueAt`** [`prisma/schema.prisma:46-47`] — Count query ổn MVP; thêm index khi dataset lớn.
+
+- **E2E chỉ assert drill-down URL, không verify sort order** [`tests/e2e/epic-2/alert-strips.spec.ts:65-70`] — AC#3 partial coverage; đủ cho MVP, bổ sung khi regression suite mở rộng.
+
+- **`optionalDateField` parse UTC từ `type="date"`** [`src/lib/validations/customer.ts:47`] — Pattern `renewalDate` có sẵn; áp dụng cho 2 field mới; fix timezone toàn app khi cần.
+
+- **`viewAllHref: "/customers"` generic khi overflow** [`src/lib/dashboard/get-alerts.ts:87`] — Dead path MVP (chỉ 3 loại alert); refine khi thêm loại alert mới.
+
+- **File untracked + mixed 2-2/2-3 trong working tree** — `migration.sql`, `get-alerts.ts`, `alert-strips.spec.ts` cần `git add`; tách commit 2.2 và 2.3 trước push.

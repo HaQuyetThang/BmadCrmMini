@@ -2,6 +2,8 @@
 
 CRM cá nhân cho solo tool provider — Next.js App Router, shadcn/ui, Prisma, PostgreSQL local.
 
+Hướng dẫn chi tiết thiết lập local (biến môi trường, migration, E2E, xử lý sự cố): [docs/huong-dan-chay-local.md](docs/huong-dan-chay-local.md).
+
 ## Yêu cầu
 
 - Node.js 20+

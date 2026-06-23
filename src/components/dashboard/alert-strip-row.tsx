@@ -1,23 +1,42 @@
-import { DASHBOARD_ALERT_LABELS } from "@/lib/constants/dashboard";
+import Link from "next/link";
+
+import type { DashboardAlerts } from "@/lib/dashboard/get-alerts";
 
 import { AlertStrip } from "./alert-strip";
 
-const ALERT_ITEMS = [
-  { key: "appointmentsToday", label: DASHBOARD_ALERT_LABELS.appointmentsToday },
-  { key: "overduePayments", label: DASHBOARD_ALERT_LABELS.overduePayments },
-  { key: "urgentTickets", label: DASHBOARD_ALERT_LABELS.urgentTickets },
-] as const;
+type AlertStripRowProps = {
+  alerts: DashboardAlerts;
+};
 
-export function AlertStripRow() {
+export function AlertStripRow({ alerts }: AlertStripRowProps) {
   return (
     <div
-      className="grid grid-cols-1 gap-row-gap sm:flex sm:flex-col md:grid md:grid-cols-2 lg:grid-cols-3"
+      className="flex min-h-10 flex-col gap-row-gap"
       role="region"
       aria-label="Cảnh báo ưu tiên"
     >
-      {ALERT_ITEMS.map((item) => (
-        <AlertStrip key={item.key} count={0} label={item.label} />
-      ))}
+      {alerts.visible.length > 0 ? (
+        <div className="grid grid-cols-1 gap-row-gap sm:flex sm:flex-col md:grid md:grid-cols-2 lg:grid-cols-3">
+          {alerts.visible.map((alert) => (
+            <AlertStrip
+              key={alert.kind}
+              count={alert.count}
+              label={alert.label}
+              href={alert.href}
+              variant={alert.variant}
+            />
+          ))}
+        </div>
+      ) : null}
+
+      {alerts.overflowTotal > 0 && alerts.viewAllHref ? (
+        <Link
+          href={alerts.viewAllHref}
+          className="text-body-sm text-muted-foreground underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+        >
+          Xem tất cả ({alerts.overflowTotal})
+        </Link>
+      ) : null}
     </div>
   );
 }

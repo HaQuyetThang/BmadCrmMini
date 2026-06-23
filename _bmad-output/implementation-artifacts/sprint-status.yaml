@@ -35,7 +35,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 
 generated: 2026-06-20
-last_updated: 2026-06-21
+last_updated: 2026-06-23
 project: BmadCRMMini
 project_key: NOKEY
 tracking_system: file-system
@@ -55,8 +55,8 @@ development_status:
 
   epic-2: in-progress
   2-1-layout-hom-nay-skeleton-va-empty-states: done
-  2-2-kpi-row-tren-hom-nay: backlog
-  2-3-alert-strips-uu-tien: backlog
+  2-2-kpi-row-tren-hom-nay: done
+  2-3-alert-strips-uu-tien: done
   2-4-ba-danh-sach-uu-tien-va-drill-down: backlog
   epic-2-retrospective: optional
 

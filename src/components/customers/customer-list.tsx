@@ -6,41 +6,47 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { CustomerListResult } from "@/lib/customers/list-customers";
 import { BUSINESS_GROUP_OPTIONS } from "@/lib/constants/business-group";
+import type { CustomerListQuery } from "@/lib/validations/customer";
 import type { BusinessGroup } from "@/generated/prisma/client";
 
 type CustomerListProps = {
   result: CustomerListResult;
   group?: BusinessGroup;
   q?: string;
+  filter?: CustomerListQuery["filter"];
 };
 
 function buildCustomersHref({
   page,
   group,
   q,
+  filter,
 }: {
   page: number;
   group?: BusinessGroup;
   q?: string;
+  filter?: CustomerListQuery["filter"];
 }) {
   const params = new URLSearchParams();
 
   if (page > 1) params.set("page", String(page));
   if (group) params.set("group", group);
   if (q) params.set("q", q);
+  if (filter) params.set("filter", filter);
 
   const query = params.toString();
   return query ? `/customers?${query}` : "/customers";
 }
 
-export function CustomerList({ result, group, q }: CustomerListProps) {
+export function CustomerList({ result, group, q, filter }: CustomerListProps) {
   const { customers, page, pageCount, total } = result;
-  const hasFilters = Boolean(group || q);
+  const hasFilters = Boolean(group || q || filter);
   const isEmpty = customers.length === 0;
 
   return (
     <div className="flex flex-col gap-section">
       <form method="get" className="flex flex-col gap-section sm:flex-row sm:items-end">
+        {filter ? <input type="hidden" name="filter" value={filter} /> : null}
         <div className="flex flex-1 flex-col gap-row-gap">
           <Label htmlFor="customer-search">Tìm khách</Label>
           <Input
@@ -95,7 +101,7 @@ export function CustomerList({ result, group, q }: CustomerListProps) {
               <Button
                 variant="outline"
                 size="sm"
-                render={<Link href={buildCustomersHref({ page: page - 1, group, q })} />}
+                render={<Link href={buildCustomersHref({ page: page - 1, group, q, filter })} />}
               >
                 Trước
               </Button>
@@ -104,7 +110,7 @@ export function CustomerList({ result, group, q }: CustomerListProps) {
               <Button
                 variant="outline"
                 size="sm"
-                render={<Link href={buildCustomersHref({ page: page + 1, group, q })} />}
+                render={<Link href={buildCustomersHref({ page: page + 1, group, q, filter })} />}
               >
                 Sau
               </Button>

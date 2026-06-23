@@ -43,6 +43,8 @@ model Customer {
   contactChannel    String?
   specialNotes      String?
   renewalDate       DateTime?
+  demoScheduledAt   DateTime?
+  paymentDueAt      DateTime?
   packagePrice      Decimal?         @db.Decimal(12, 2)
   billingCycle      String?
   licenseKey        String?

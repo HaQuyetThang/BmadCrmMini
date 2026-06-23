@@ -40,6 +40,8 @@ export type SeedCustomerInput = {
   renewalDate?: Date | null;
   licenseKey?: string | null;
   packagePrice?: number | null;
+  demoScheduledAt?: Date | null;
+  paymentDueAt?: Date | null;
 };
 
 export async function seedCustomer(input: SeedCustomerInput) {
@@ -52,6 +54,8 @@ export async function seedCustomer(input: SeedCustomerInput) {
       renewalDate: input.renewalDate ?? null,
       licenseKey: input.licenseKey ?? null,
       packagePrice: input.packagePrice ?? null,
+      demoScheduledAt: input.demoScheduledAt ?? null,
+      paymentDueAt: input.paymentDueAt ?? null,
     },
   });
 }

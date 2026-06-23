@@ -10,6 +10,12 @@ export const DASHBOARD_ALERT_LABELS = {
   urgentTickets: "Ticket Khẩn mở",
 } as const;
 
+export const DASHBOARD_ALERT_HREFS = {
+  appointmentsToday: "/customers?filter=demo-today",
+  overduePayments: "/customers?filter=payment-overdue",
+  urgentTickets: "/tickets?urgent=1",
+} as const;
+
 export const DASHBOARD_SECTION_TITLES = {
   todayTasks: "Việc hôm nay",
   renewals: "Khách sắp gia hạn",

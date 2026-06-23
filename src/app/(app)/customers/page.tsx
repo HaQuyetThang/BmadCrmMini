@@ -15,6 +15,7 @@ export default async function CustomersPage({ searchParams }: CustomersPageProps
     page: rawParams.page,
     group: rawParams.group,
     q: rawParams.q,
+    filter: rawParams.filter,
   });
 
   const query = parsed.success ? parsed.data : { page: 1 as const };
@@ -41,7 +42,12 @@ export default async function CustomersPage({ searchParams }: CustomersPageProps
   return (
     <div className="flex flex-col gap-section">
       <h1 className="text-display-sm text-foreground">Khách hàng</h1>
-      <CustomerList result={result} group={query.group} q={query.q} />
+      <CustomerList
+        result={result}
+        group={query.group}
+        q={query.q}
+        filter={query.filter}
+      />
     </div>
   );
 }

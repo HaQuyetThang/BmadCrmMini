@@ -125,6 +125,8 @@ export async function updateCustomer(
     contactChannel: formData.get("contactChannel") ?? undefined,
     specialNotes: formData.get("specialNotes") ?? undefined,
     renewalDate: formData.get("renewalDate") ?? undefined,
+    demoScheduledAt: formData.get("demoScheduledAt") ?? undefined,
+    paymentDueAt: formData.get("paymentDueAt") ?? undefined,
     packagePrice: formData.get("packagePrice") ?? undefined,
     billingCycle: formData.get("billingCycle") ?? undefined,
     licenseKey: formData.get("licenseKey") ?? undefined,
@@ -147,6 +149,8 @@ export async function updateCustomer(
         contactChannel: parsed.data.contactChannel,
         specialNotes: parsed.data.specialNotes,
         renewalDate: parsed.data.renewalDate,
+        demoScheduledAt: parsed.data.demoScheduledAt,
+        paymentDueAt: parsed.data.paymentDueAt,
         packagePrice:
           parsed.data.packagePrice === null
             ? null

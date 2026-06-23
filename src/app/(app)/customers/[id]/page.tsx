@@ -38,6 +38,8 @@ export default async function CustomerDetailPage({ params }: CustomerDetailPageP
     contactChannel: customer.contactChannel,
     specialNotes: customer.specialNotes,
     renewalDate: customer.renewalDate?.toISOString() ?? null,
+    demoScheduledAt: customer.demoScheduledAt?.toISOString() ?? null,
+    paymentDueAt: customer.paymentDueAt?.toISOString() ?? null,
     packagePrice: customer.packagePrice?.toString() ?? null,
     billingCycle: customer.billingCycle,
     licenseKey: customer.licenseKey,

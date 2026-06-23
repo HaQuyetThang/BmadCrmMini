@@ -37,12 +37,8 @@ const optionalTrimmedString = (max: number, message: string) =>
     })
     .pipe(z.union([z.null(), z.string().max(max, message)]));
 
-export const updateCustomerSchema = z.object({
-  businessGroup: z.nativeEnum(BusinessGroup),
-  serviceType: optionalTrimmedString(120, "Loại dịch vụ quá dài."),
-  contactChannel: optionalTrimmedString(120, "Kênh liên hệ quá dài."),
-  specialNotes: optionalTrimmedString(2000, "Ghi chú quá dài."),
-  renewalDate: z
+const optionalDateField = (invalidMessage: string) =>
+  z
     .string()
     .optional()
     .transform((value, ctx) => {
@@ -53,13 +49,22 @@ export const updateCustomerSchema = z.object({
       if (Number.isNaN(date.getTime())) {
         ctx.addIssue({
           code: "custom",
-          message: "Ngày gia hạn không hợp lệ.",
+          message: invalidMessage,
         });
         return z.NEVER;
       }
 
       return date;
-    }),
+    });
+
+export const updateCustomerSchema = z.object({
+  businessGroup: z.nativeEnum(BusinessGroup),
+  serviceType: optionalTrimmedString(120, "Loại dịch vụ quá dài."),
+  contactChannel: optionalTrimmedString(120, "Kênh liên hệ quá dài."),
+  specialNotes: optionalTrimmedString(2000, "Ghi chú quá dài."),
+  renewalDate: optionalDateField("Ngày gia hạn không hợp lệ."),
+  demoScheduledAt: optionalDateField("Lịch hẹn demo không hợp lệ."),
+  paymentDueAt: optionalDateField("Hạn thanh toán không hợp lệ."),
   packagePrice: z
     .string()
     .optional()
@@ -116,6 +121,10 @@ export const customerListQuerySchema = z.object({
       return trimmed === "" ? undefined : trimmed;
     },
     z.string().max(120).optional().catch(undefined),
+  ),
+  filter: z.preprocess(
+    (value) => (value === "" || value === undefined ? undefined : value),
+    z.enum(["demo-today", "payment-overdue"]).optional().catch(undefined),
   ),
 });
 
