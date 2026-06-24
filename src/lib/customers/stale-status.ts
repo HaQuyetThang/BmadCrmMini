@@ -10,6 +10,15 @@ function startOfLocalDay(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
 
+/** End of local calendar day N days before today — aligns Prisma `lte` with getDaysSinceStatusChange >= N. */
+export function getInclusiveDayCutoff(daysAgo: number, now: Date = new Date()): Date {
+  const today = startOfLocalDay(now);
+  const cutoff = new Date(today);
+  cutoff.setDate(cutoff.getDate() - daysAgo);
+  cutoff.setHours(23, 59, 59, 999);
+  return cutoff;
+}
+
 export function getDaysSinceStatusChange(
   statusChangedAt: Date,
   now: Date = new Date(),

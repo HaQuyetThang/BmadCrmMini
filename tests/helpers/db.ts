@@ -42,6 +42,7 @@ export type SeedCustomerInput = {
   packagePrice?: number | null;
   demoScheduledAt?: Date | null;
   paymentDueAt?: Date | null;
+  lastInteractionAt?: Date | null;
 };
 
 export async function seedCustomer(input: SeedCustomerInput) {
@@ -56,6 +57,7 @@ export async function seedCustomer(input: SeedCustomerInput) {
       packagePrice: input.packagePrice ?? null,
       demoScheduledAt: input.demoScheduledAt ?? null,
       paymentDueAt: input.paymentDueAt ?? null,
+      lastInteractionAt: input.lastInteractionAt ?? null,
     },
   });
 }

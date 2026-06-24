@@ -61,3 +61,13 @@ Backlog các finding từ code review — không chặn story hiện tại.
 - **`viewAllHref: "/customers"` generic khi overflow** [`src/lib/dashboard/get-alerts.ts:87`] — Dead path MVP (chỉ 3 loại alert); refine khi thêm loại alert mới.
 
 - **File untracked + mixed 2-2/2-3 trong working tree** — `migration.sql`, `get-alerts.ts`, `alert-strips.spec.ts` cần `git add`; tách commit 2.2 và 2.3 trước push.
+
+## Deferred from: code review of 2-4-ba-danh-sach-uu-tien-va-drill-down (2026-06-23)
+
+- **Unbounded `findMany` + merge in-memory trước slice 25** [`src/lib/dashboard/get-today-tasks.ts:98-175`] — MVP scale pattern giống alert strips 2.3; tối ưu khi dataset lớn.
+
+- **View-more renewals/pipeline không filter subset** [`src/components/dashboard/today-dashboard.tsx:56-81`] — MVP documented Task 3; refine khi có customer/pipeline filters.
+
+- **`getRenewalInfo(...)!` non-null assertion** [`src/lib/dashboard/get-renewals.ts:63`] — Pre-existing story 1.7; thêm guard khi refactor renewals.
+
+- **Focus ring NFR-3 không có E2E** [`src/components/dashboard/dashboard-priority-row.tsx:38`] — UI đã có `focus-visible:ring-3`; thêm a11y test khi regression suite mở rộng.
