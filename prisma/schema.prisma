@@ -32,6 +32,11 @@ enum TimelineType {
   NOTE
 }
 
+enum TicketPriority {
+  NORMAL
+  KHAN
+}
+
 model Customer {
   id                String           @id @default(cuid())
   name              String
@@ -54,6 +59,7 @@ model Customer {
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
   timeline          TimelineEntry[]
+  tickets           Ticket[]
 }
 
 model TimelineEntry {
@@ -65,6 +71,20 @@ model TimelineEntry {
   createdAt  DateTime     @default(now())
 
   @@index([customerId, createdAt(sort: Desc)])
+}
+
+model Ticket {
+  id         String         @id @default(cuid())
+  customerId String
+  customer   Customer       @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  title      String
+  priority   TicketPriority @default(NORMAL)
+  closedAt   DateTime?
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  @@index([closedAt, priority, createdAt(sort: Desc)])
+  @@index([customerId])
 }
 
 model AppSetting {

@@ -35,7 +35,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 
 generated: 2026-06-20
-last_updated: 2026-06-23
+last_updated: 2026-06-24
 project: BmadCRMMini
 project_key: NOKEY
 tracking_system: file-system
@@ -60,9 +60,9 @@ development_status:
   2-4-ba-danh-sach-uu-tien-va-drill-down: done
   epic-2-retrospective: optional
 
-  epic-3: backlog
-  3-1-ticket-crud-va-queue: backlog
-  3-2-ticket-khan-tu-dashboard-alert: backlog
+  epic-3: in-progress
+  3-1-ticket-crud-va-queue: done
+  3-2-ticket-khan-tu-dashboard-alert: done
   epic-3-retrospective: optional
 
   epic-4: backlog

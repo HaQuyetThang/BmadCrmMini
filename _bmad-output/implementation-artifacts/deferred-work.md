@@ -71,3 +71,23 @@ Backlog các finding từ code review — không chặn story hiện tại.
 - **`getRenewalInfo(...)!` non-null assertion** [`src/lib/dashboard/get-renewals.ts:63`] — Pre-existing story 1.7; thêm guard khi refactor renewals.
 
 - **Focus ring NFR-3 không có E2E** [`src/components/dashboard/dashboard-priority-row.tsx:38`] — UI đã có `focus-visible:ring-3`; thêm a11y test khi regression suite mở rộng.
+
+## Deferred from: code review of 3-1-ticket-crud-va-queue (2026-06-24)
+
+- **`urgentTicketCount` hardcoded 0 trong alert strip** [`src/lib/dashboard/get-alerts.ts:47`] — Out of scope Story 3.2; wire trong story 3-2.
+
+- **Không E2E pagination 25 rows** [`tests/e2e/epic-3/ticket-crud.spec.ts`] — Code dùng `PAGE_SIZE=25` đúng AC3; thêm test khi mở rộng regression suite.
+
+- **Timeline auto-log khi đóng ticket** [`src/actions/tickets.ts:93`] — Story 3.2 scope; `logTimelineEntry` chưa gọi từ `closeTicket`.
+
+- **Không confirmation dialog trước đóng ticket** [`src/components/tickets/ticket-list-row.tsx:24`] — UX enhancement ngoài AC; một click đóng ngay.
+
+- **Double-submit form tạo ticket** [`src/components/customers/create-ticket-form.tsx:24`] — Pattern giống quick-capture deferred story 1.3.
+
+## Deferred from: code review of 3-2-ticket-khan-tu-dashboard-alert (2026-06-24)
+
+- **KPI Ticket mở không assert trong E2E 3.2** [`tests/e2e/epic-3/urgent-ticket-alert.spec.ts`] — AC#1 verify 3.1; đã cover trong ticket-crud.spec.ts.
+
+- **Hai query riêng cho urgent count + first ID** [`src/lib/dashboard/get-alerts.ts:46`] — Optimization; gộp khi refactor dashboard alerts.
+
+- **`closeTicket` vs `completeTicketSupport` side effects khác nhau** [`src/actions/tickets.ts:69`] — By design: queue close vs complete-support flow.

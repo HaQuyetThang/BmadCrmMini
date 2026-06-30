@@ -5,6 +5,7 @@ import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
 import { softDeleteCustomer, updateCustomer } from "@/actions/customers";
+import { CreateTicketForm } from "@/components/customers/create-ticket-form";
 import { CustomerProfileHeader } from "@/components/customers/customer-profile-header";
 import { RenewalStatusBadge } from "@/components/customers/renewal-status-badge";
 import { clearStaleBannerDismiss, StaleBanner } from "@/components/pipeline/stale-banner";
@@ -325,6 +326,8 @@ export function CustomerProfileForm({ customer }: CustomerProfileFormProps) {
           </form>
         </CardContent>
       </Card>
+
+      <CreateTicketForm customerId={customer.id} />
 
       <TimelineSection customerId={customer.id} entries={customer.timelineEntries} />
     </div>

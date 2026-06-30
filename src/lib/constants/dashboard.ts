@@ -13,7 +13,7 @@ export const DASHBOARD_ALERT_LABELS = {
 export const DASHBOARD_ALERT_HREFS = {
   appointmentsToday: "/customers?filter=demo-today",
   overduePayments: "/customers?filter=payment-overdue",
-  urgentTickets: "/tickets?urgent=1",
+  urgentTickets: "/tickets?status=open&urgent=1",
 } as const;
 
 export const DASHBOARD_SECTION_TITLES = {

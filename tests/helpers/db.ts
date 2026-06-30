@@ -3,7 +3,7 @@ import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 
-import type { BusinessGroup, PipelineStatus } from "@/generated/prisma/client";
+import type { BusinessGroup, PipelineStatus, TicketPriority } from "@/generated/prisma/client";
 import { PrismaClient } from "@/generated/prisma/client";
 
 const E2E_NAME_PREFIX = "E2E ";
@@ -58,6 +58,20 @@ export async function seedCustomer(input: SeedCustomerInput) {
       demoScheduledAt: input.demoScheduledAt ?? null,
       paymentDueAt: input.paymentDueAt ?? null,
       lastInteractionAt: input.lastInteractionAt ?? null,
+    },
+  });
+}
+
+export async function seedTicket(input: {
+  customerId: string;
+  title: string;
+  priority?: TicketPriority;
+}) {
+  return getTestDb().ticket.create({
+    data: {
+      customerId: input.customerId,
+      title: input.title,
+      priority: input.priority ?? "NORMAL",
     },
   });
 }

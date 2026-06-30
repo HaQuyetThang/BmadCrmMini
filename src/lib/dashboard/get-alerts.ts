@@ -3,6 +3,10 @@ import {
   DASHBOARD_ALERT_LABELS,
 } from "@/lib/constants/dashboard";
 import { appointmentsTodayWhere, overduePaymentsWhere } from "@/lib/dashboard/date-range";
+import {
+  countOpenUrgentTickets,
+  getFirstOpenUrgentTicketId,
+} from "@/lib/tickets/list-tickets";
 import { db } from "@/lib/db";
 
 export type DashboardAlertKind = "appointmentsToday" | "overduePayments" | "urgentTickets";
@@ -39,12 +43,17 @@ const ALERT_VARIANT: Record<DashboardAlertKind, DashboardAlertVariant> = {
 const MAX_VISIBLE_ALERTS = 3;
 
 export async function getDashboardAlerts(): Promise<DashboardAlerts> {
-  const [appointmentsTodayCount, overduePaymentsCount] = await Promise.all([
-    db.customer.count({ where: appointmentsTodayWhere() }),
-    db.customer.count({ where: overduePaymentsWhere() }),
-  ]);
+  const [appointmentsTodayCount, overduePaymentsCount, urgentTicketCount, firstUrgentTicketId] =
+    await Promise.all([
+      db.customer.count({ where: appointmentsTodayWhere() }),
+      db.customer.count({ where: overduePaymentsWhere() }),
+      countOpenUrgentTickets(),
+      getFirstOpenUrgentTicketId(),
+    ]);
 
-  const urgentTicketCount = 0;
+  const urgentTicketHref = firstUrgentTicketId
+    ? `/tickets/${firstUrgentTicketId}`
+    : DASHBOARD_ALERT_HREFS.urgentTickets;
 
   const rawAlerts: DashboardAlert[] = [
     {
@@ -59,7 +68,7 @@ export async function getDashboardAlerts(): Promise<DashboardAlerts> {
       kind: "urgentTickets",
       count: urgentTicketCount,
       label: DASHBOARD_ALERT_LABELS.urgentTickets,
-      href: DASHBOARD_ALERT_HREFS.urgentTickets,
+      href: urgentTicketHref,
       variant: ALERT_VARIANT.urgentTickets,
       priority: ALERT_PRIORITY.urgentTickets,
     },
